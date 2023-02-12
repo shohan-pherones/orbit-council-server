@@ -1,14 +1,19 @@
 require("dotenv").config();
 
 const express = require("express");
+const projectRoutes = require("./routes/projectRoute");
 
 // express app
 const app = express();
 
-// routes
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to the app" });
+// middlewares
+app.use((req, res, next) => {
+  console.log(req.path, req.method);
+  next();
 });
+
+// routes
+app.use("/api/projects", projectRoutes);
 
 // port
 const port = process.env.PORT || 5000;
