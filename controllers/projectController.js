@@ -5,7 +5,7 @@ const Project = require("../models/projectModel");
 const getProjects = async (req, res) => {
   const projects = await Project.find({}).sort({ createdAt: -1 }); // newest one at the top --> descending
 
-  res.status(200).json({ projects });
+  res.status(200).json(projects);
 };
 
 // get a single project
@@ -13,7 +13,7 @@ const getProject = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No project found" });
+    return res.status(404).json({ error: "Invalid id" });
   }
 
   const project = await Project.findById(id);
@@ -25,7 +25,7 @@ const getProject = async (req, res) => {
   res.status(200).json(project);
 };
 
-// create new project
+// create a new project
 const createProject = async (req, res) => {
   const { title, tech, budget, duration, manager, dev } = req.body;
 
@@ -76,7 +76,7 @@ const deleteProject = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No project found" });
+    return res.status(404).json({ error: "Invalid id" });
   }
 
   const project = await Project.findOneAndDelete({ _id: id });
@@ -93,7 +93,7 @@ const updateProject = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No project found" });
+    return res.status(404).json({ error: "Invalid id" });
   }
 
   const project = await Project.findOneAndUpdate({ _id: id }, { ...req.body });
