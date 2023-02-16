@@ -22,14 +22,14 @@ app.use((req, res, next) => {
 // routes
 app.use("/api/projects", projectRoutes);
 
-// connect to the db
+// connecting to the db
 mongoose.set("strictQuery", false); // optional
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
-    // listen for the requests
+    // listening for the requests
     app.listen(port, () => {
-      console.log(`connected to the db & listening on port ${port}`);
+      console.log(`connected to the db & listening on the port ${port}`);
     });
   })
   .catch((err) => {
