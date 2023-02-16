@@ -27,6 +27,40 @@ const getProject = async (req, res) => {
 
 // create new project
 const createProject = async (req, res) => {
+  const { title, tech, budget, duration, manager, dev } = req.body;
+
+  let emptyFields = [];
+
+  if (!title) {
+    emptyFields.push("title");
+  }
+
+  if (!tech) {
+    emptyFields.push("tech");
+  }
+
+  if (!budget) {
+    emptyFields.push("budget");
+  }
+
+  if (!duration) {
+    emptyFields.push("duration");
+  }
+
+  if (!manager) {
+    emptyFields.push("manager");
+  }
+
+  if (!dev) {
+    emptyFields.push("dev");
+  }
+
+  if (emptyFields.length > 0) {
+    return res
+      .status(400)
+      .json({ error: "Please fill in all the fields", emptyFields });
+  }
+
   try {
     const project = await Project.create({
       ...req.body,
