@@ -28,7 +28,9 @@ userSchema.statics.signup = async function (email, password) {
   }
 
   if (!validator.isStrongPassword(password)) {
-    throw Error("Password must be 8+ chars, with uppercase, lowercase, number, and symbol");
+    throw Error(
+      "Password must be 8+ chars, with uppercase, lowercase, number, and symbol"
+    );
   }
 
   const exists = await this.findOne({ email });
@@ -43,6 +45,29 @@ userSchema.statics.signup = async function (email, password) {
 
   // creating user
   const user = await this.create({ email, password: hash });
+
+  return user;
+};
+
+// static login method
+userSchema.statics.login = async function (email, password) {
+  // validation
+  if (!email || !password) {
+    throw Error("All fields must be filled");
+  }
+
+  const user = await this.findOne({ email });
+
+  if (!user) {
+    throw Error("Incorrect email");
+  }
+
+  // comparing passwords
+  const match = await bcrypt.compare(password, user.password);
+
+  if (!match) {
+    throw Error("Incorrect password");
+  }
 
   return user;
 };
